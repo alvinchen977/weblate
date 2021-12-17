@@ -18,6 +18,7 @@
 #
 
 import re
+import parsedatetime
 from datetime import datetime
 from functools import lru_cache, reduce
 from itertools import chain
@@ -344,6 +345,13 @@ class TermExpr:
                     microsecond=999999,
                     tzinfo=tzinfo,
                 ),
+            )
+        if text.isalnum():
+            cal = parsedatetime.Calendar()
+            time_struct, _ = cal.parse(text)
+            return (
+                datetime(*time_struct[:6]),
+                timezone.now(),
             )
         try:
             # Here we inject 5:55:55 time and if that was not changed

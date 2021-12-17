@@ -210,6 +210,17 @@ class QueryParserTest(TestCase, SearchMixin):
             Q(timestamp__gte=datetime(2019, 3, 1, 0, 0, tzinfo=utc)),
         )
 
+    def test_date_fuzzy(self):
+        self.assert_query(
+            "changed:<2 days ago",
+            Q(change__timestamp__gte=datetime(2021, 12, 14, 0, 0, tzinfo=utc))
+            & Q(
+                change__timestamp__lte=datetime(
+                    2021, 12, 16, 59, 59, 999999, tzinfo=utc
+                )
+            )
+        )
+
     def test_bool(self):
         self.assert_query("pending:true", Q(pending=True))
 

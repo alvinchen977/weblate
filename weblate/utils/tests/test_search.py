@@ -219,7 +219,8 @@ class QueryParserTest(TestCase, SearchMixin):
                     2021, 12, 16, 59, 59, 999999, tzinfo=utc
                 )
             )
-        )
+            & Q(change__action__in=Change.ACTIONS_CONTENT),
+        )        
 
     def test_bool(self):
         self.assert_query("pending:true", Q(pending=True))
